@@ -1,5 +1,6 @@
 package com.sik.guiddemo.utils.guid
 
+import android.view.MotionEvent
 import com.sik.guid.IGuidData
 import java.io.File
 import java.io.InputStream
@@ -23,7 +24,8 @@ class FirstGuidData : IGuidData {
         startX: Float,
         startY: Float,
         currentX: Float,
-        currentY: Float
+        currentY: Float,
+        event: MotionEvent
     ): Float {
         return (currentX - startX) / slideDistance
     }

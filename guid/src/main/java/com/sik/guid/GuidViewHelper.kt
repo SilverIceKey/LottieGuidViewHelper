@@ -110,7 +110,7 @@ class GuidViewHelper constructor(context: Context) {
 
             MotionEvent.ACTION_MOVE -> {
                 viewAnimationLottieView.progress = guidDataList[currentGuidPosition].progressUpdate(
-                    startX, startY, event.x, event.y
+                    startX, startY, event.x, event.y, event
                 )
             }
 

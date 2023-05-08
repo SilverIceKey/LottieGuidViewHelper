@@ -1,5 +1,6 @@
 package com.sik.guid
 
+import android.view.MotionEvent
 import java.io.InputStream
 
 interface IGuidData {
@@ -21,5 +22,5 @@ interface IGuidData {
     /**
      * 数值更新
      */
-    fun progressUpdate(startX: Float, startY: Float, currentX: Float, currentY: Float): Float
+    fun progressUpdate(startX: Float, startY: Float, currentX: Float, currentY: Float,event: MotionEvent): Float
 }
