@@ -2,6 +2,29 @@
 
 说明：基于Lottie实现不操作时循环播放动画，操作时对手势进行判断来设置动画进度，当手势完成度到达预设值时松手继续播放动画直到结束并开始下一份引导或完成引导。
 
+项目集成：
+
+[![](https://jitpack.io/v/SilverIceKey/LottieGuidViewHelper.svg)](https://jitpack.io/#SilverIceKey/LottieGuidViewHelper)
+
+在根目录的build.gradle中添加jitpack
+
+```groovy
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+在app的build.gradle中添加依赖
+
+```groovy
+	dependencies {
+	        implementation 'com.github.SilverIceKey:LottieGuidViewHelper:Tag'
+	}
+```
+
 使用案例：
 
 创建引导实体实现IGuidData接口，接口包括以下实现：
