@@ -109,16 +109,24 @@ class GuidViewHelper constructor(context: Context) {
             }
 
             MotionEvent.ACTION_MOVE -> {
-                viewAnimationLottieView.progress = guidDataList[currentGuidPosition].progressUpdate(
-                    startX, startY, event.x, event.y, event
-                )
+                viewAnimationLottieView.progress =
+                    if (guidDataList[currentGuidPosition].progressUpdate(
+                            startX, startY, event.x, event.y, event
+                        ) > 1
+                    ) 1f else guidDataList[currentGuidPosition].progressUpdate(
+                        startX, startY, event.x, event.y, event
+                    )
             }
 
             MotionEvent.ACTION_UP -> {
                 if (viewAnimationLottieView.progress >= guidDataList[currentGuidPosition].clearProgress()) {
-                    viewAnimationLottieView.resumeAnimation()
-                    viewAnimationLottieView.repeatCount = 1
-                    viewAnimationLottieView.addAnimatorListener(animatorListener)
+                    if (viewAnimationLottieView.progress == 1f) {
+                        onAnimationEnd()
+                    } else {
+                        viewAnimationLottieView.addAnimatorListener(animatorListener)
+                        viewAnimationLottieView.repeatCount = 0
+                        viewAnimationLottieView.resumeAnimation()
+                    }
                 } else {
                     viewAnimationLottieView.progress = 0f
                     fingerAnimationLottieView.progress = 0f
@@ -134,6 +142,23 @@ class GuidViewHelper constructor(context: Context) {
     }
 
     /**
+     * 动画结束
+     */
+    fun onAnimationEnd() {
+        if (currentGuidPosition == guidDataList.size - 1) {
+            parentView?.removeView(viewAnimationLottieView)
+            parentView?.removeView(fingerAnimationLottieView)
+            onFinish()
+            parentView = null
+            onFinish = {}
+            onNotClear = {}
+        } else {
+            currentGuidPosition++
+            start()
+        }
+    }
+
+    /**
      * 动画监听
      */
     private val animatorListener = object : AnimatorListener {
@@ -142,17 +167,7 @@ class GuidViewHelper constructor(context: Context) {
         }
 
         override fun onAnimationEnd(animation: Animator) {
-            if (currentGuidPosition == guidDataList.size - 1) {
-                parentView?.removeView(viewAnimationLottieView)
-                parentView?.removeView(fingerAnimationLottieView)
-                onFinish()
-                parentView = null
-                onFinish = {}
-                onNotClear = {}
-            } else {
-                currentGuidPosition++
-                start()
-            }
+            onAnimationEnd()
         }
 
         override fun onAnimationCancel(animation: Animator) {
